@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 RUN apt-get update && apt install -y nodejs npm git
-ENV LANG en_US.utf8
+ENV LANG=en_US.utf8
 
 SHELL ["/bin/bash", "-c"]
 
@@ -11,11 +11,11 @@ RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git
 
 RUN npm i -g yarn
 
-#COPY quran.com-frontend-next/ frontend/
-COPY env frontend/.env
+RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
+
 COPY next.config.js frontend/
 
-COPY env ./env.sh
+RUN cp frontend/.env ./env.sh
 
 COPY entrypoint.sh .
 
@@ -33,3 +33,4 @@ EXPOSE 80
 COPY server-http.mjs .
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+

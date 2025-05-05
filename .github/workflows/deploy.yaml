@@ -1,30 +1,69 @@
-name: Kamal deploy
+name: Deploy with Kamal
 
 on:
+  # Automatic runs when code is pushed
+  push:
+    branches:
+      - testing
+      - staging
+      - production
+
+  # Manual runs from the GitHub UI
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: false
+        default: production          # UI default
+        type: choice
+        options: [testing, staging, production]
 
 jobs:
-  kamal-deploy:
-    name: Kamal deploy
+  deploy:
     runs-on: ubuntu-latest
-    env:
+
+    # Map each branch to the matching Kamal environment name
+    strategy:
+      matrix:
+        include:
+          - branch: refs/heads/testing     # <‑‑ git ref
+            env:    testing               # <‑‑ KAMAL_ENV + GitHub Environment
+          - branch: refs/heads/staging
+            env:    staging
+          - branch: refs/heads/production
+            env:    production
+
+    # Only run the matrix row that matches the event
+    if: >-
+      (github.event_name == 'push' &&
+       github.ref == matrix.branch) ||
+      (github.event_name == 'workflow_dispatch' &&
+       (inputs.environment == '' || inputs.environment == matrix.env))
+
+    # Prevent parallel deployments to the same target
     concurrency:
-      group: default_environment
+      group: deploy-${{ matrix.env }}
       cancel-in-progress: true
-    environment:
-      name: default
+
+    # Tells GitHub which “Environment” (Secrets/Protection rules) to use
+    environment: ${{ matrix.env }}
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'      # pin Ruby, caches gems automatically
+
       - name: Install Kamal
-        run: |
-          gem install kamal -v 1.7.3
+        run: gem install kamal -v 1.7.3
+
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: kamal deploy
-        run: kamal deploy
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Deploy with Kamal
+        run: |
+          KAMAL_ENV=${{ matrix.env }} kamal deploy

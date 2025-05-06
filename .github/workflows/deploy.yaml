@@ -27,15 +27,15 @@ jobs:
     runs-on: ubuntu-latest
 
     # Map each branch to the matching Kamal environment name
-    # strategy:
-    #   matrix:
-    #     include:
-    #       - branch: refs/heads/testing     # <‑‑ git ref
-    #         env:    testing               # <‑‑ KAMAL_ENV + GitHub Environment
-    #       - branch: refs/heads/staging
-    #         env:    staging
-    #       - branch: refs/heads/production
-    #         env:    production    
+    strategy:
+      matrix:
+        include:
+          - branch: refs/heads/testing     # <‑‑ git ref
+            env:    testing               # <‑‑ KAMAL_ENV + GitHub Environment
+          - branch: refs/heads/staging
+            env:    staging
+          - branch: refs/heads/production
+            env:    production    
 
     # Prevent parallel deployments to the same target
     concurrency:

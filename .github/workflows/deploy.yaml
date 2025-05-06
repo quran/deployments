@@ -105,5 +105,5 @@ jobs:
           echo ${{ matrix.env }}
           ls -la
           tree -L 2
-          kamal setup
+          kamal setup -d ${{ matrix.env }}
           kamal deploy -d ${{ matrix.env }}

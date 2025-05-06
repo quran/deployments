@@ -27,7 +27,6 @@ registry:
 # Configure builder setup.
 builder:
   arch: arm64
-  context: ./quran-frontend-next
   driver: docker
   secrets:
   - QURAN_FRONTEND_ENV_CONTENT

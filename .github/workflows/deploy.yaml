@@ -88,6 +88,7 @@ jobs:
 
       - name: Deploy with Kamal
         if: steps.check.outputs.should_deploy == 'true'
+        working-directory: quran-frontend-next
         run: |
           KAMAL_ENV=${{ matrix.env }} kamal setup
           KAMAL_ENV=${{ matrix.env }} kamal deploy

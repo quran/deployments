@@ -52,17 +52,17 @@ jobs:
       - name: Determine if should deploy
         id: check
         run: |
-          should_deploy="false"
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "${{ matrix.branch }}" ]]; then
-            should_deploy="true"
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "${{ matrix.env }}" ]]; then
-            should_deploy="true"
-          fi
-          echo "should_deploy=$should_deploy" >> $GITHUB_OUTPUT
-          if [[ "$should_deploy" == "false" ]]; then
-            echo "Skipping deployment for ${{ matrix.env }} (branch: ${{ matrix.branch }}) due to trigger conditions."
-            echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
-          fi
+          should_deploy="true"
+          # if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "${{ matrix.branch }}" ]]; then
+          #   should_deploy="true"
+          # elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "${{ matrix.env }}" ]]; then
+          #   should_deploy="true"
+          # fi
+          # echo "should_deploy=$should_deploy" >> $GITHUB_OUTPUT
+          # if [[ "$should_deploy" == "false" ]]; then
+          #   echo "Skipping deployment for ${{ matrix.env }} (branch: ${{ matrix.branch }}) due to trigger conditions."
+          #   echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
+          # fi
 
       - name: Checkout quran.com-frontend-next
         uses: actions/checkout@v4

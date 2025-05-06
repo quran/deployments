@@ -10,10 +10,10 @@ servers:
     - 10.1.0.3
     - 10.1.0.2
 
-ssh:
-  user: root
-  keys_only: true
-  keys: [ "~/.ssh/id_ed25519" ]
+# ssh:
+#   user: root
+#   keys_only: true
+#   keys: [ "~/.ssh/id_ed25519" ]
 
 # Credentials for your image host.
 registry:

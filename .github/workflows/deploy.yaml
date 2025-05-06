@@ -97,7 +97,11 @@ jobs:
       - name: Deploy with Kamal
         if: steps.check.outputs.should_deploy == 'true'
         run: |
+          QURAN_FRONTEND_ENV_CONTENT=${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
+          SERVER_IP_1=${{ secrets.SERVER_IP_1 }}
+          SERVER_IP_2=${{ secrets.SERVER_IP_2 }}
           echo $PWD
+          echo ${{ matrix.env }}
           ls -la
           tree -L 2
           kamal setup

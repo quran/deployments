@@ -5,10 +5,10 @@ service: quran-frontend
 image: ghcr.io/quran/quran-frontend
 
 # Deploy to these servers.
-servers:
-  web:
-    - 10.1.0.3
-    - 10.1.0.2
+# servers:
+#   web:
+#     - 10.1.0.3
+#     - 10.1.0.2
 
 # ssh:
 #   user: root
@@ -27,7 +27,7 @@ registry:
 # Configure builder setup.
 builder:
   arch: arm64
-  context: ../quran-frontend-next
+  context: /home/runner/work/deployments/deployments/quran-frontend-next
   driver: docker
   secrets:
   - QURAN_FRONTEND_ENV_CONTENT

@@ -18,6 +18,10 @@ on:
         type: choice
         options: [testing, staging, production]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -31,39 +35,59 @@ jobs:
           - branch: refs/heads/staging
             env:    staging
           - branch: refs/heads/production
-            env:    production
-
-    # Only run the matrix row that matches the event
-    if: >-
-      (github.event_name == 'push' &&
-       github.ref == matrix.branch) ||
-      (github.event_name == 'workflow_dispatch' &&
-       (inputs.environment == '' || inputs.environment == matrix.env))
+            env:    production    
 
     # Prevent parallel deployments to the same target
     concurrency:
       group: deploy-${{ matrix.env }}
       cancel-in-progress: true
 
-    # Tells GitHub which “Environment” (Secrets/Protection rules) to use
+    # Tells GitHub which "Environment" (Secrets/Protection rules) to use
     environment: ${{ matrix.env }}
 
     steps:
+      - name: Determine if should deploy
+        id: check
+        run: |
+          should_deploy="false"
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "${{ matrix.branch }}" ]]; then
+            should_deploy="true"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "${{ matrix.env }}" ]]; then
+            should_deploy="true"
+          fi
+          echo "should_deploy=$should_deploy" >> $GITHUB_OUTPUT
+          if [[ "$should_deploy" == "false" ]]; then
+            echo "Skipping deployment for ${{ matrix.env }} (branch: ${{ matrix.branch }}) due to trigger conditions."
+            echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.check.outputs.should_deploy == 'true'
+        with:
+          fetch-depth: 1
+          repository: quran/quran.com-frontend-next
+          ref: ${{ matrix.branch }}
+          path: quran-frontend-next
 
       - uses: ruby/setup-ruby@v1
+        if: steps.check.outputs.should_deploy == 'true'
         with:
           ruby-version: '3.3'      # pin Ruby, caches gems automatically
 
       - name: Install Kamal
-        run: gem install kamal -v 1.7.3
+        if: steps.check.outputs.should_deploy == 'true'
+        run: gem install kamal -v 2.5.3
 
       - uses: webfactory/ssh-agent@v0.9.0
+        if: steps.check.outputs.should_deploy == 'true'
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - uses: docker/setup-buildx-action@v3
+        if: steps.check.outputs.should_deploy == 'true'
 
       - name: Deploy with Kamal
+        if: steps.check.outputs.should_deploy == 'true'
         run: |
+          KAMAL_ENV=${{ matrix.env }} kamal setup
           KAMAL_ENV=${{ matrix.env }} kamal deploy

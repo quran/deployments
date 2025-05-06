@@ -2,7 +2,7 @@
 service: quran-frontend
 
 # Name of the container image.
-image: quran/quran-frontend
+image: ghcr.io/quran/quran-frontend
 
 # Deploy to these servers.
 servers:
@@ -17,16 +17,17 @@ ssh:
 
 # Credentials for your image host.
 registry:
-  server: registry-test.quran.com:443
-  username: admin
+  server: ghcr.io
+  username: quran
 
   # Always use an access token rather than real password (pulled from .kamal/secrets).
   password:
-    - KAMAL_REGISTRY_PASSWORD
+    - KAMAL_GH_REGISTRY_PASSWORD
 
 # Configure builder setup.
 builder:
   arch: arm64
+  context: ./quran-frontend-next
   driver: docker
   secrets:
   - QURAN_FRONTEND_ENV_CONTENT

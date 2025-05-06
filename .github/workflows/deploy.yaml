@@ -46,6 +46,9 @@ jobs:
     environment: ${{ matrix.env }}
 
     steps:
+      - name: Checkout deployments repository
+        uses: actions/checkout@v4
+
       - name: Determine if should deploy
         id: check
         run: |
@@ -61,7 +64,8 @@ jobs:
             echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
           fi
 
-      - uses: actions/checkout@v4
+      - name: Checkout quran.com-frontend-next
+        uses: actions/checkout@v4
         if: steps.check.outputs.should_deploy == 'true'
         with:
           fetch-depth: 1

@@ -1,0 +1,4 @@
+servers:
+  web:
+    - $SERVER_IP_1
+    - $SERVER_IP_2

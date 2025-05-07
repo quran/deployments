@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-c"]
 
 # RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git frontend
 
-COPY frontend ./frontend
+# COPY frontend ./frontend
 
 RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
 

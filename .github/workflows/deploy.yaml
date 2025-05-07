@@ -102,6 +102,7 @@ jobs:
         run: |
           echo $PWD
           ls -la
+          ls -la frontend
           tree -L 2
           cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend
           kamal lock release

@@ -3,7 +3,9 @@ FROM node:20-bookworm-slim
 ENV LANG=en_US.utf8
 WORKDIR /app
 
-RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git frontend
+SHELL ["/bin/bash", "-c"]
+
+# RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git frontend
 
 COPY frontend ./frontend
 

@@ -19,7 +19,7 @@ COPY entrypoint.sh .
 WORKDIR /app/frontend
 ENV NODE_ENV=production
 
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --prod
 RUN yarn build
 
 ENV HOSTNAME=0.0.0.0

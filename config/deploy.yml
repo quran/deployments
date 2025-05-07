@@ -22,7 +22,7 @@ registry:
 # Configure builder setup.
 builder:
   arch: arm64
-  context: /home/runner/work/deployments/deployments/frontend
+  context: /home/runner/work/deployments/deployments/
   driver: docker
   secrets:
   - QURAN_FRONTEND_ENV_CONTENT

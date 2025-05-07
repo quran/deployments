@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.5
 FROM node:20-bookworm-slim
 
 ENV LANG=en_US.utf8
@@ -9,7 +10,7 @@ SHELL ["/bin/bash", "-c"]
 
 # COPY frontend ./frontend
 
-RUN --mount=type=secret,target=/app/.env-frontend,id=QURAN_FRONTEND_ENV_CONTENT cp /app/.env-frontend/QURAN_FRONTEND_ENV_CONTENT frontend/.env
+RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
 
 COPY next.config.js frontend/
 COPY entrypoint.sh .

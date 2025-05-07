@@ -100,7 +100,6 @@ jobs:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
         run: |
           echo $PWD
-          echo ${{ matrix.env }}
           ls -la
           tree -L 2
           kamal setup -d ${{ matrix.env }}

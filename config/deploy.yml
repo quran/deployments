@@ -6,13 +6,13 @@ service: quran-frontend
 image: quran/quran-frontend
 
 # Deploy to these servers.
-servers: { web: [157.180.34.63, 135.181.32.139] }
+servers: [157.180.34.63, 135.181.32.139]
 
 ssh:
   config: true
-  user: root
-  keys_only: true
-  keys: [ "./quran_kamal_key" ]
+#   user: root
+#   keys_only: true
+#   keys: [ "./quran_kamal_key" ]
 
 # Credentials for your image host.
 registry:

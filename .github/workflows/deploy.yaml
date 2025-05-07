@@ -104,5 +104,6 @@ jobs:
           # ls -la
           # tree -L 2
           cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend
+          kamal lock release
           kamal setup
           kamal deploy

@@ -14,11 +14,11 @@ COPY ./frontend /app/frontend
 COPY next.config.js frontend/
 COPY entrypoint.sh .
 
-RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
+# RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
 
 WORKDIR /app/frontend
-RUN source /app/env.sh && yarn --frozen-lockfile
-RUN source /app/env.sh && yarn build
+RUN yarn --frozen-lockfile
+RUN yarn build
 
 ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0

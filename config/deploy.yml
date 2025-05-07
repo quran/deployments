@@ -11,8 +11,8 @@ servers: [157.180.34.63, 135.181.32.139]
 ssh:
   config: true
   user: root
-#   keys_only: true
-#   keys: [ "./quran_kamal_key" ]
+  keys_only: true
+  keys: [ "./quran_kamal_key" ]
 
 # Credentials for your image host.
 registry:

@@ -98,8 +98,10 @@ jobs:
         if: steps.check.outputs.should_deploy == 'true'
         env:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo $PWD
+          echo $SSH_PRIVATE_KEY > quran_kamal_key
           ls -la
           tree -L 2
           kamal setup

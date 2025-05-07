@@ -104,10 +104,8 @@ jobs:
           echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env
           echo $PWD
           ls -la
-          # ls -la /run/secrets
           ls -la frontend
           tree -L 2
-          cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend
           kamal lock release
           kamal setup
           kamal deploy

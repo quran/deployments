@@ -17,10 +17,11 @@ COPY entrypoint.sh .
 # RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
 
 WORKDIR /app/frontend
+ENV NODE_ENV=production
+
 RUN yarn --frozen-lockfile
 RUN yarn build
 
-ENV NODE_ENV=production
 ENV HOSTNAME=0.0.0.0
 EXPOSE 80
 

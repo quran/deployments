@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim
+FROM node:18-bookworm-slim
 
 ENV LANG=en_US.utf8
 WORKDIR /app

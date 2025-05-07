@@ -1,4 +1,5 @@
 FROM node:20-bookworm-slim
+SHELL ["/bin/bash", "-c"]
 
 ENV LANG=en_US.utf8
 WORKDIR /app

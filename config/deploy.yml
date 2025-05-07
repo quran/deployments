@@ -1,9 +1,9 @@
 # Name of your application. Used to uniquely configure containers.
-service: quran-frontend-simple
+service: quran-frontend
 
 # Name of the container image.
 # image: ghcr.io/quran/quran-frontend
-image: quran/quran-frontend-simple
+image: quran/quran-frontend
 
 # Deploy to these servers.
 servers: { web: [157.180.34.63, 135.181.32.139] }

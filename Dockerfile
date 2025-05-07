@@ -4,12 +4,12 @@ ENV LANG=en_US.utf8
 WORKDIR /app
 
 # RUN npm i -g yarn
-RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
+RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT .env
 
-COPY next.config.js frontend/
+COPY next.config.js .
 COPY entrypoint.sh .
 
-RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
+RUN cp .env ./env.sh && sed -i 's/^/export /g' env.sh
 
 WORKDIR /app/frontend
 RUN source /app/env.sh && yarn --frozen-lockfile

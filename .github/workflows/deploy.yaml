@@ -101,6 +101,7 @@ jobs:
           KAMAL_GH_REGISTRY_PASSWORD: ${{ secrets.KAMAL_GH_REGISTRY_PASSWORD }}
         run: |
           set -x
+          echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env
           echo $PWD
           ls -la
           # ls -la /run/secrets

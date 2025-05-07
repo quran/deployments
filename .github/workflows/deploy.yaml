@@ -98,8 +98,6 @@ jobs:
         if: steps.check.outputs.should_deploy == 'true'
         env:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
-          SERVER_IP_1: ${{ secrets.SERVER_IP_1 }}
-          SERVER_IP_2: ${{ secrets.SERVER_IP_2 }}
         run: |
           echo $PWD
           echo ${{ matrix.env }}

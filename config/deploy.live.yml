@@ -1,3 +1,0 @@
-servers:
-  web:
-    - $SERVER_IP_1

@@ -100,8 +100,10 @@ jobs:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
           KAMAL_GH_REGISTRY_PASSWORD: ${{ secrets.KAMAL_GH_REGISTRY_PASSWORD }}
         run: |
+          set -x
           echo $PWD
           ls -la
+          ls -la /run/secrets
           ls -la frontend
           tree -L 2
           cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend

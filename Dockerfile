@@ -3,7 +3,7 @@ FROM node:20-bookworm-slim
 ENV LANG=en_US.utf8
 WORKDIR /app
 
-RUN npm i -g yarn
+# RUN npm i -g yarn
 RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
 
 COPY next.config.js frontend/

@@ -72,10 +72,10 @@ jobs:
           repository: quran/quran.com-frontend-next
           ref: ${{ matrix.branch }}
           path: frontend
-          # sparse-checkout-cone-mode: false   # allow “!” exclusions
-          # sparse-checkout: |
-          #   /*                     # pull everything ...
-          #   !/public/fonts/        # ... except the fonts directory
+          sparse-checkout-cone-mode: false   # turn off cone so we can use "!" negation
+          sparse-checkout: |
+            /*
+            !/public/fonts/
 
       - uses: ruby/setup-ruby@v1
         if: steps.check.outputs.should_deploy == 'true'

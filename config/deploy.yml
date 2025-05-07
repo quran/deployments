@@ -1,36 +1,44 @@
 # Name of your application. Used to uniquely configure containers.
-service: quran-frontend
+service: quran-frontend-simple
 
 # Name of the container image.
-image: ghcr.io/quran/quran-frontend
+# image: ghcr.io/quran/quran-frontend
+image: quran/quran-frontend-simple
 
 # Deploy to these servers.
-# servers:
-#   web:
-#     - 10.1.0.3
-#     - 10.1.0.2
+servers: { web: [157.180.34.63, 135.181.32.139] }
 
-# ssh:
-#   user: root
-#   keys_only: true
-#   keys: [ "~/.ssh/id_ed25519" ]
+ssh:
+  config: true
+  user: root
+  keys_only: true
+  keys: [ "./quran_kamal_key" ]
 
 # Credentials for your image host.
 registry:
-  server: ghcr.io
-  username: quran
+#   server: ghcr.io
+#   username: quran
+
+#   # Always use an access token rather than real password (pulled from .kamal/secrets).
+#   password:
+#     - KAMAL_GH_REGISTRY_PASSWORD
+  server: registry-test.quran.com:443
+  username: admin
 
   # Always use an access token rather than real password (pulled from .kamal/secrets).
   password:
-    - KAMAL_GH_REGISTRY_PASSWORD
+    - KAMAL_REGISTRY_PASSWORD
 
 # Configure builder setup.
 builder:
   arch: arm64
-  context: /home/runner/work/deployments/deployments/quran-frontend-next
+  # context: /home/runner/work/deployments/deployments/quran-frontend-next
+  # driver: docker
+  # secrets:
+  # - QURAN_FRONTEND_ENV_CONTENT
+builder:
+  arch: arm64
   driver: docker
-  secrets:
-  - QURAN_FRONTEND_ENV_CONTENT
 
 boot:
   limit: 1 # Can also specify as a percentage of total hosts, such as "25%"

@@ -64,18 +64,18 @@ jobs:
             echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
           fi
 
-      # - name: Checkout quran.com-frontend-next
-      #   uses: actions/checkout@v4
-      #   if: steps.check.outputs.should_deploy == 'true'
-      #   with:
-      #     fetch-depth: 1
-      #     repository: quran/quran.com-frontend-next
-      #     ref: ${{ matrix.branch }}
-      #     path: quran-frontend-next
-      #     sparse-checkout-cone-mode: false   # allow “!” exclusions
-      #     sparse-checkout: |
-      #       /*                     # pull everything ...
-      #       !/public/fonts/        # ... except the fonts directory
+      - name: Checkout quran.com-frontend-next
+        uses: actions/checkout@v4
+        if: steps.check.outputs.should_deploy == 'true'
+        with:
+          fetch-depth: 1
+          repository: quran/quran.com-frontend-next
+          ref: ${{ matrix.branch }}
+          path: frontend
+          sparse-checkout-cone-mode: false   # allow “!” exclusions
+          sparse-checkout: |
+            /*                     # pull everything ...
+            !/public/fonts/        # ... except the fonts directory
 
       - uses: ruby/setup-ruby@v1
         if: steps.check.outputs.should_deploy == 'true'
@@ -99,10 +99,9 @@ jobs:
         env:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
           KAMAL_GH_REGISTRY_PASSWORD: ${{ secrets.KAMAL_GH_REGISTRY_PASSWORD }}
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
         run: |
-          echo $PWD
-          ls -la
-          tree -L 2
+          # echo $PWD
+          # ls -la
+          # tree -L 2
           kamal setup
           kamal deploy

@@ -103,7 +103,7 @@ jobs:
           set -x
           echo $PWD
           ls -la
-          ls -la /run/secrets
+          # ls -la /run/secrets
           ls -la frontend
           tree -L 2
           cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend

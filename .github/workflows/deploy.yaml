@@ -100,9 +100,9 @@ jobs:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
           KAMAL_GH_REGISTRY_PASSWORD: ${{ secrets.KAMAL_GH_REGISTRY_PASSWORD }}
         run: |
-          # echo $PWD
-          # ls -la
-          # tree -L 2
+          echo $PWD
+          ls -la
+          tree -L 2
           cp Dockerfile entrypoint.sh next.config.js server-http.mjs frontend
           kamal lock release
           kamal setup

@@ -5,11 +5,7 @@ WORKDIR /app
 
 SHELL ["/bin/bash", "-c"]
 
-# RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git frontend
-
 COPY ./frontend /app/frontend
-
-# RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
 
 COPY next.config.js frontend/
 COPY entrypoint.sh .
@@ -20,8 +16,7 @@ WORKDIR /app/frontend
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN --mount=type=cache,target=/root/.cache/yarn \
-  yarn --frozen-lockfile --prod --network-timeout 1000000
+RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
 RUN yarn build
 
 ENV HOSTNAME=0.0.0.0

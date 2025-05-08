@@ -30,8 +30,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - branch: refs/heads/testing     # <‑‑ git ref
-            env:    testing               # <‑‑ KAMAL_ENV + GitHub Environment
+          - branch: refs/heads/testing
+            env:    testing
           - branch: refs/heads/staging
             env:    staging
           - branch: refs/heads/production

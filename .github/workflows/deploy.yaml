@@ -102,7 +102,7 @@ jobs:
         if: steps.check.outputs.should_deploy == 'true'
         env:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
-          KAMAL_GH_REGISTRY_PASSWORD: ${{ secrets.KAMAL_GH_REGISTRY_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
           echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env

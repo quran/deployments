@@ -17,7 +17,7 @@ registry:
   server: ghcr.io
   username: quran
   password:
-    - KAMAL_GH_REGISTRY_PASSWORD
+    - GITHUB_TOKEN
 
 # Configure builder setup.
 builder:

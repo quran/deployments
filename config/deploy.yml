@@ -24,6 +24,10 @@ builder:
   arch: arm64
   context: /home/runner/work/deployments/deployments/
   driver: docker
+  cache:
+    type: gha
+    options: mode=max
+    image: kamal-app-build-cache
   # secrets:
   # - QURAN_FRONTEND_ENV_CONTENT
 

@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     # Map each branch to the matching Kamal environment name
     strategy:
@@ -81,6 +81,7 @@ jobs:
         if: steps.check.outputs.should_deploy == 'true'
         with:
           ruby-version: '3.3'      # pin Ruby, caches gems automatically
+          bundler-cache: true
 
       - name: Install Kamal
         if: steps.check.outputs.should_deploy == 'true'
@@ -93,6 +94,9 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
         if: steps.check.outputs.should_deploy == 'true'
+
+      - name: Expose GitHub Runtime for cache
+        uses: crazy-max/ghaction-github-runtime@v3
 
       - name: Deploy with Kamal
         if: steps.check.outputs.should_deploy == 'true'

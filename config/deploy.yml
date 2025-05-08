@@ -1,5 +1,5 @@
 service: quran-frontend
-image: ghcr.io/quran/quran-frontend
+image: quran/quran-frontend
 
 servers: [157.180.34.63, 135.181.32.139]
 

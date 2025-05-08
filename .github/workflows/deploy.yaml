@@ -20,22 +20,25 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # Four real targets → four matrix entries
+    # Map each branch to the matching Kamal environment name
     strategy:
       matrix:
-        env: [testing, staging, pre-live, production]
+        include:
+          - branch: refs/heads/testing
+            env:    testing
+          - branch: refs/heads/staging
+            env:    staging
+          - branch: refs/heads/pre-live
+            env:    pre-live
+          - branch: refs/heads/production
+            env:    production
 
-    # Only keep the matrix row that matches the trigger
-    # if: >-
-    #   ${{ (github.event_name == 'push' &&
-    #        github.ref_name    == matrix.env) ||
-    #       (github.event_name == 'workflow_dispatch' &&
-    #        github.event.inputs.environment == matrix.env) }}
-
+    # Prevent parallel deployments to the same target
     concurrency:
       group: deploy-${{ matrix.env }}
       cancel-in-progress: true
 
+    # Tells GitHub which "Environment" (Secrets/Protection rules) to use
     environment: ${{ matrix.env }}
 
     steps:

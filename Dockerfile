@@ -18,8 +18,8 @@ COPY entrypoint.sh .
 
 WORKDIR /app/frontend
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN yarn config set registry https://registry.npmjs.org
 RUN --mount=type=cache,target=/root/.cache/yarn \
   yarn --frozen-lockfile --prod --network-timeout 1000000
 RUN yarn build

@@ -14,7 +14,7 @@ COPY ./frontend /app/frontend
 COPY next.config.js frontend/
 COPY entrypoint.sh .
 
-# RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
+RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
 
 WORKDIR /app/frontend
 ENV NODE_ENV=production

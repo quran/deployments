@@ -34,7 +34,3 @@ proxy:
     interval: 3
     path: /
     timeout: 60
-
-env:
-  secret:
-    - GITHUB_TOKEN

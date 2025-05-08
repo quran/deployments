@@ -23,7 +23,6 @@ permissions:
 
 jobs:
   deploy:
-    permissions: write-all
     runs-on: self-hosted
 
     # Map each branch to the matching Kamal environment name

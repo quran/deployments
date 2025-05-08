@@ -106,6 +106,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env
+          perl -pe '
+            s/\$SERVER_IPS\$/ $ENV{SERVER_IPS} /ge;
+            s/\$PWD\$/       $ENV{PWD}       /ge;
+          ' -i config/deploy.yml
           echo $PWD
           kamal lock release  # in case a job was cancelled
           kamal setup

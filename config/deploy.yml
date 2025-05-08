@@ -1,7 +1,7 @@
 service: quran-frontend
 image: quran/deployments
 
-servers: [157.180.34.63, 135.181.32.139]
+servers: [$SERVER_IPS$]
 
 ssh:
   config: true
@@ -15,7 +15,7 @@ registry:
 
 builder:
   arch: arm64
-  context: /home/web/actions-runner/_work/deployments/deployments/
+  context: $PWD$
   driver: docker
   cache:
     type: gha

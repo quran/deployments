@@ -105,7 +105,6 @@ jobs:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -x
           echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env
           echo $PWD
           kamal lock release  # in case a job was cancelled

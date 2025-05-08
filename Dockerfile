@@ -16,8 +16,8 @@ WORKDIR /app/frontend
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
-RUN yarn build
+# RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
+# RUN yarn build
 
 ENV HOSTNAME=0.0.0.0
 EXPOSE 80

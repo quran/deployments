@@ -22,7 +22,7 @@ registry:
 # Configure builder setup.
 builder:
   arch: arm64
-  context: /home/runner/work/deployments/deployments/
+  context: /home/web/actions-runner/_work/deployments/deployments/
   driver: docker
   cache:
     type: gha

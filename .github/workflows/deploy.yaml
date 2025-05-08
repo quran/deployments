@@ -2,17 +2,12 @@ name: Kamal Deploy
 
 on:
   push:
-    branches:
-      - testing
-      - staging
-      - pre-live
-      - production
-
+    branches: [testing, staging, pre-live, production]
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy'
-        required: false
+        description: Environment to deploy
+        required: true
         default: testing
         type: choice
         options: [testing, staging, pre-live, production]
@@ -25,25 +20,22 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # Map each branch to the matching Kamal environment name
+    # Four real targets → four matrix entries
     strategy:
       matrix:
-        include:
-          - branch: refs/heads/testing
-            env:    testing
-          - branch: refs/heads/staging
-            env:    staging
-          - branch: refs/heads/pre-live
-            env:    pre-live
-          - branch: refs/heads/production
-            env:    production
+        env: [testing, staging, pre-live, production]
 
-    # Prevent parallel deployments to the same target
+    # Only keep the matrix row that matches the trigger
+    if: >
+      (github.event_name == 'push' &&
+       github.ref_name    == matrix.env) ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.event.inputs.environment == matrix.env)
+
     concurrency:
       group: deploy-${{ matrix.env }}
       cancel-in-progress: true
 
-    # Tells GitHub which "Environment" (Secrets/Protection rules) to use
     environment: ${{ matrix.env }}
 
     steps:
@@ -106,11 +98,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SERVER_IPS: ${{ secrets.SERVER_IPS }}
         run: |
-          echo "${QURAN_FRONTEND_ENV_CONTENT}" > ./frontend/.env
-          perl -pe '
-            s/\$SERVER_IPS\$/ $ENV{SERVER_IPS} /ge;
-            s/\$PWD\$/       $ENV{PWD}       /ge;
-          ' -i config/deploy.yml
+          echo "$QURAN_FRONTEND_ENV_CONTENT" > ./frontend/.env
+          perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;
+                    s/\$PWD\$/$ENV{PWD}/ge' -i config/deploy.yml
           kamal lock release  # in case a job was cancelled
           kamal setup
           kamal deploy

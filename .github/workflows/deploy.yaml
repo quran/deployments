@@ -26,11 +26,11 @@ jobs:
         env: [testing, staging, pre-live, production]
 
     # Only keep the matrix row that matches the trigger
-    if: >-
-      ${{ (github.event_name == 'push' &&
-           github.ref_name    == matrix.env) ||
-          (github.event_name == 'workflow_dispatch' &&
-           github.event.inputs.environment == matrix.env) }}
+    # if: >-
+    #   ${{ (github.event_name == 'push' &&
+    #        github.ref_name    == matrix.env) ||
+    #       (github.event_name == 'workflow_dispatch' &&
+    #        github.event.inputs.environment == matrix.env) }}
 
     concurrency:
       group: deploy-${{ matrix.env }}

@@ -7,21 +7,28 @@ SHELL ["/bin/bash", "-c"]
 
 # RUN git clone -b production https://github.com/quran/quran.com-frontend-next.git frontend
 
-COPY ./frontend /app/frontend
-
-# RUN --mount=type=secret,id=QURAN_FRONTEND_ENV_CONTENT cp /run/secrets/QURAN_FRONTEND_ENV_CONTENT frontend/.env
-
-COPY next.config.js frontend/
-COPY entrypoint.sh .
-
-# RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
+# Copy package.json and yarn.lock first to leverage Docker cache
+COPY ./frontend/package.json ./frontend/yarn.lock /app/frontend/
 
 WORKDIR /app/frontend
 ENV NODE_ENV=production
 
+# Configure yarn
 RUN yarn config set registry https://registry.npmjs.org
-RUN --mount=type=cache,target=/root/.cache/yarn \
-  yarn --frozen-lockfile --prod --network-timeout 1000000
+
+# Install dependencies with better caching
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn,sharing=locked \
+    --mount=type=cache,target=/root/.cache/yarn,sharing=locked \
+    yarn --frozen-lockfile --network-timeout 1000000
+
+# Copy the rest of the application
+WORKDIR /app
+COPY ./frontend /app/frontend
+COPY next.config.js frontend/
+COPY entrypoint.sh .
+
+# Build the application
+WORKDIR /app/frontend
 RUN yarn build
 
 ENV HOSTNAME=0.0.0.0

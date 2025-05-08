@@ -19,6 +19,7 @@ COPY entrypoint.sh .
 WORKDIR /app/frontend
 ENV NODE_ENV=production
 
+RUN yarn config set registry https://registry.npmjs.org
 RUN yarn --frozen-lockfile --prod
 RUN yarn build
 

@@ -29,8 +29,9 @@ boot:
 proxy:
   host: onprem-test.quran.com
   ssl: false
-  app_port: 80
   healthcheck:
     interval: 3
     path: /
     timeout: 60
+
+deploy_timeout: 60

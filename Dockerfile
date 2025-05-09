@@ -21,6 +21,6 @@ RUN yarn build
 ENV HOSTNAME=0.0.0.0
 EXPOSE 80
 
-COPY server-http.mjs .
+COPY server-http.js .
 
-ENTRYPOINT ["bash", "-c", ". /app/env.sh && exec node /app/frontend/server-http.mjs"]
+ENTRYPOINT ["bash", "-c", ". /app/env.sh && exec node /app/frontend/server-http.js"]

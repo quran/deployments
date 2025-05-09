@@ -66,5 +66,6 @@ jobs:
           echo "$QURAN_FRONTEND_ENV_CONTENT" > ./frontend/.env
           perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;
                     s/\$PWD\$/$ENV{PWD}/ge' -i kamal.yml
+          perl -0777 -i -pe 's/"postinstall": "husky",\n//g' ./frontend/package.json
           kamal lock release -c kamal.yml  # in case a job was cancelled
           kamal deploy -q -c kamal.yml

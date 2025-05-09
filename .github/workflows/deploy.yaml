@@ -20,82 +20,44 @@ jobs:
   deploy:
     runs-on: self-hosted
 
-    # Map each branch to the matching Kamal environment name
-    strategy:
-      matrix:
-        include:
-          - branch: refs/heads/testing
-            env:    testing
-          - branch: refs/heads/staging
-            env:    staging
-          - branch: refs/heads/pre-live
-            env:    pre-live
-          - branch: refs/heads/production
-            env:    production
-
-    # Prevent parallel deployments to the same target
     concurrency:
-      group: deploy-${{ matrix.env }}
+      group: deploy-${{ github.head_ref || github.ref_name }}
       cancel-in-progress: true
 
-    # Tells GitHub which "Environment" (Secrets/Protection rules) to use
-    environment: ${{ matrix.env }}
+    environment: ${{ github.head_ref || github.ref_name }}
 
     steps:
-      - name: Checkout deployments repository
-        uses: actions/checkout@v4
-
-      - name: Determine if should deploy
-        id: check
-        run: |
-          should_deploy="false"
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "${{ matrix.branch }}" ]]; then
-            should_deploy="true"
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "${{ matrix.env }}" ]]; then
-            should_deploy="true"
-          fi
-          echo "should_deploy=$should_deploy" >> $GITHUB_OUTPUT
-          if [[ "$should_deploy" == "false" ]]; then
-            echo "Skipping deployment for ${{ matrix.env }} (branch: ${{ matrix.branch }}) due to trigger conditions."
-            echo "Event: ${{ github.event_name }}, Ref: ${{ github.ref }}, Input Env: ${{ github.event.inputs.environment }}"
-          fi
+      - uses: actions/checkout@v4
 
       - name: Checkout quran.com-frontend-next
         uses: actions/checkout@v4
-        if: steps.check.outputs.should_deploy == 'true'
         with:
           fetch-depth: 1
           repository: mustafa0x/quran.com-frontend-next
-          ref: ${{ matrix.branch }}
+          ref: ${{ github.head_ref || github.ref_name }}
           path: frontend
-          # sparse-checkout-cone-mode: false   # turn off cone so we can use "!" negation
-          # sparse-checkout: |
-          #   /*
-          #   !/public/fonts/
+          sparse-checkout-cone-mode: false   # turn off cone so we can use "!" negation
+          sparse-checkout: |
+            /*
+            !/public/fonts/
 
       - uses: ruby/setup-ruby@v1
-        if: steps.check.outputs.should_deploy == 'true'
         with:
           ruby-version: '3.3'      # pin Ruby, caches gems automatically
           bundler-cache: true
 
-      - name: Install Kamal
-        if: steps.check.outputs.should_deploy == 'true'
-        run: gem install kamal -v 2.5.3
+      - run: gem install kamal -v 2.5.3
 
       - uses: webfactory/ssh-agent@v0.9.0
-        if: steps.check.outputs.should_deploy == 'true'
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - uses: docker/setup-buildx-action@v3
-        if: steps.check.outputs.should_deploy == 'true'
 
       - name: Expose GitHub Runtime for cache
         uses: crazy-max/ghaction-github-runtime@v3
 
-      - name: Deploy with Kamal
-        if: steps.check.outputs.should_deploy == 'true'
+      - name: Deploy
         env:
           QURAN_FRONTEND_ENV_CONTENT: ${{ secrets.QURAN_FRONTEND_ENV_CONTENT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,7 +65,7 @@ jobs:
         run: |
           echo "$QURAN_FRONTEND_ENV_CONTENT" > ./frontend/.env
           perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;
-                    s/\$PWD\$/$ENV{PWD}/ge' -i config/deploy.yml
-          kamal lock release  # in case a job was cancelled
-          kamal setup
-          kamal deploy
+                    s/\$PWD\$/$ENV{PWD}/ge' -i kamal.yml
+          kamal -c kamal.yml lock release  # in case a job was cancelled
+          kamal -c kamal.yml setup
+          kamal -c kamal.yml deploy

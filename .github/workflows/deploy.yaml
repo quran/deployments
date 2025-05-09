@@ -67,5 +67,4 @@ jobs:
           perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;
                     s/\$PWD\$/$ENV{PWD}/ge' -i kamal.yml
           kamal lock release -c kamal.yml  # in case a job was cancelled
-          kamal setup -c kamal.yml
           kamal deploy -c kamal.yml

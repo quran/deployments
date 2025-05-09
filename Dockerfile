@@ -1,6 +1,6 @@
 FROM node:18-bookworm-slim
 
-RUN exit 1
+# RUN exit 1
 
 ENV LANG=en_US.utf8
 WORKDIR /app

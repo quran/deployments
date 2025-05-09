@@ -66,6 +66,6 @@ jobs:
           echo "$QURAN_FRONTEND_ENV_CONTENT" > ./frontend/.env
           perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;
                     s/\$PWD\$/$ENV{PWD}/ge' -i kamal.yml
-          kamal -c kamal.yml lock release  # in case a job was cancelled
-          kamal -c kamal.yml setup
-          kamal -c kamal.yml deploy
+          kamal lock release -c kamal.yml  # in case a job was cancelled
+          kamal setup -c kamal.yml
+          kamal deploy -c kamal.yml

@@ -27,7 +27,7 @@ boot:
   wait: 60
 
 proxy:
-  host: onprem-test.quran.com
+  host: $HOSTNAME$
   ssl: false
   healthcheck:
     interval: 3

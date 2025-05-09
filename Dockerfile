@@ -10,11 +10,10 @@ COPY next.config.js frontend/
 
 RUN cp frontend/.env ./env.sh && sed -i 's/^/export /g' env.sh
 
-WORKDIR /app/frontend
-
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+WORKDIR /app/frontend
 RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
 RUN yarn build
 

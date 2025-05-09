@@ -2,7 +2,7 @@ name: Kamal Deploy
 
 on:
   push:
-    branches: [testing, staging, pre-live, production]
+    branches: [testing, master, pre-live, production]
   workflow_dispatch:
     inputs:
       environment:
@@ -21,10 +21,10 @@ jobs:
     runs-on: self-hosted
 
     concurrency:
-      group: deploy-${{ github.head_ref || github.ref_name }}
+      group: deploy-${{ (github.head_ref || github.ref_name) == 'master' && 'staging' || github.head_ref || github.ref_name }}
       cancel-in-progress: true
 
-    environment: ${{ github.head_ref || github.ref_name }}
+    environment: ${{ (github.head_ref || github.ref_name) == 'master' && 'staging' || github.head_ref || github.ref_name }}
 
     steps:
       - uses: actions/checkout@v4

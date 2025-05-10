@@ -71,4 +71,4 @@ jobs:
                     s/\$PWD\$/$ENV{PWD}/ge' -i kamal.yml
           perl -0777 -i -pe 's/"postinstall": "husky",\n//g' ./frontend/package.json
           kamal lock release -c kamal.yml  # in case a job was cancelled
-          kamal deploy -q -c kamal.yml
+          kamal deploy -c kamal.yml

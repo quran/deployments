@@ -1,5 +1,5 @@
 service: quran-frontend
-image: quran/deployments
+image: quran/quran-frontend
 
 servers: [$SERVER_IPS$]
 
@@ -8,10 +8,10 @@ ssh:
   user: root
 
 registry:
-  server: ghcr.io
-  username: quran
+  server: registry-test.quran.com:443
+  username: admin
   password:
-    - GITHUB_TOKEN
+    - KAMAL_REGISTRY_PASSWORD
 
 builder:
   arch: arm64

@@ -12,10 +12,10 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app/frontend
-RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
-RUN yarn build
+# RUN --mount=type=cache,target=/root/.cache/yarn yarn --frozen-lockfile --prod
+# RUN yarn build
 
 ENV HOSTNAME=0.0.0.0
 EXPOSE 80
 
-ENTRYPOINT ["bash", "-c", ". /app/env.sh && exec node /app/frontend/server-http.js"]
+# ENTRYPOINT ["bash", "-c", ". /app/env.sh && exec node /app/frontend/server-http.js"]

@@ -17,10 +17,6 @@ builder:
   arch: arm64
   context: $PWD$
   driver: docker
-  cache:
-    type: gha
-    options: mode=max
-    image: kamal-app-build-cache
 
 boot:
   limit: 1 # Can also specify as a percentage of total hosts, such as "25%"

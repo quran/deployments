@@ -1,0 +1,12 @@
+name: Kamal Deploy
+
+on: [push, workflow_dispatch]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - run: |
+          set +x
+          ls ~/frontend-testing/

@@ -63,6 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SERVER_IPS: ${{ secrets.SERVER_IPS }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
         run: |
           echo "$QURAN_FRONTEND_ENV_CONTENT" > ./frontend/.env
           perl -pe 's/\$SERVER_IPS\$/$ENV{SERVER_IPS}/ge;

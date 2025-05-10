@@ -8,7 +8,7 @@ ssh:
   user: root
 
 registry:
-  server: registry-test.quran.com:443
+  server: registry-test.quran.com
   username: admin
   password:
     - KAMAL_REGISTRY_PASSWORD
